@@ -10,7 +10,7 @@ There are two input files: **demo.gpkg**, which has a number of Census layers re
 
 ## Deliverables
 
-None. This is an example only and there's nothing due.
+**None**. This is an example only and there's **nothing due**.
 
 ## Instructions
 
@@ -18,9 +18,9 @@ None. This is an example only and there's nothing due.
 
 1. Load `demo-output.gpkg` into QGIS
 
-1. Build Voronoi polygons around the stores. The Voronoi tool is under `Vector` > `Geometry Tools`. Choose the stores as the input layer and set the buffer region to 50%. Then clip the Voronoi layer at the county boundary, remove the unclipped Voronoi layer, and move the store layer to the top to see the overall result.
+1. Build Voronoi polygons around the stores. The Voronoi tool is under `Vector` > `Geometry Tools`. Choose the stores as the input layer and set the buffer region to 100%. Then clip the Voronoi layer at the county boundary, remove the unclipped Voronoi layer, and move the store layer to the top to see the overall result.
 
-1. Add lines showing the shortest distance between each tract centroid and the nearest store. The `Shortest line between features` tool is available in the `Processing` > `Toolbox` (gear icon) under the `Vector analysis` heading. Use the tract centroids as the source layer and the stores as the destination layer. Move the centroid layer above the clipped Voronoi layer to see the overall result.
+1. Add lines showing the shortest distance between each tract centroid and the nearest store. The `Shortest line between features` tool is available from the top menu via the `Processing` > `Toolbox` (gear icon) under the `Vector analysis` heading. Use the tract centroids as the source layer and the stores as the destination layer. After the lines are built, move the centroid layer above the clipped Voronoi layer to see the overall result.
 
 ## Tips
 
