@@ -11,11 +11,13 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 
+plt.rcParams['figure.dpi'] = 300
+
 out_file = 'demo-output.gpkg'
 
 #
 #  Set up the store input file, the CRS used by the store file,
-#  which is WGS 84, and the CRS that will be used for projected 
+#  which is WGS 84, and the CRS that will be used for projected
 #  data, which is UTM 18N
 #
 
@@ -25,7 +27,7 @@ wgs84 = 4326
 utm18n = 26918
 
 #
-#  Read the store file, filter down to Onondaga County, and 
+#  Read the store file, filter down to Onondaga County, and
 #  filter out records with no coordinates
 #
 
@@ -62,13 +64,13 @@ for store in big_stores:
     this_store = (is_big == True) & (is_gas == False)
 
     trim['big'] = trim['big'] | this_store
-  
+
 big = trim[ trim['big'] ]
 
 #%%
 #
 #  Now build a GeoSeries from the georeference column,
-#  which uses the Well-Known Text representation of 
+#  which uses the Well-Known Text representation of
 #  store coordinates. Then build a full GeoDataFrame
 #  using it.
 #
@@ -93,7 +95,7 @@ geo = geo.to_crs(utm18n)
 county = gpd.read_file('demo.gpkg',layer='county')
 syr = gpd.read_file('demo.gpkg',layer='city')
 
-fig,ax1 = plt.subplots(dpi=300)
+fig,ax1 = plt.subplots()
 county.plot(color='gray',ax=ax1)
 syr.plot(color='tan',ax=ax1)
 geo.plot(color='blue',markersize=1,ax=ax1)
@@ -101,31 +103,31 @@ ax1.axis('off')
 
 #%%
 #
-#  Build a geopackage for use with QGIS in building Voronoi 
-#  polygons. Start by removing any existing version of the 
+#  Build a geopackage for use with QGIS in building Voronoi
+#  polygons. Start by removing any existing version of the
 #  output file, then write the layers.
 #
 
 if os.path.exists(out_file):
     os.remove(out_file)
-    
-county.to_file(out_file,layer='county',index=False)
-syr.to_file(out_file,layer='city',index=False)
-geo.to_file(out_file,layer='stores',index=False)
+
+county.to_file(out_file,layer='county')
+syr.to_file(out_file,layer='city')
+geo.to_file(out_file,layer='stores')
 
 #%%
 #
 #  Copy a couple of other layers across that will be convenient
-#  in demonstrating features of QGIS. Also, build a layer 
+#  in demonstrating features of QGIS. Also, build a layer
 #  of tract centroids in the process.
 #
 
 roads = gpd.read_file('demo.gpkg',layer='roads')
-roads.to_file(out_file,layer='roads',index=False)
+roads.to_file(out_file,layer='roads')
 
 tracts = gpd.read_file('demo.gpkg',layer='tracts')
-tracts.to_file(out_file,layer='tracts',index=False)
+tracts.to_file(out_file,layer='tracts')
 
 centroids = tracts.copy()
 centroids['geometry'] = tracts.centroid
-centroids.to_file(out_file,layer='centroids',index=False)
+centroids.to_file(out_file,layer='centroids')

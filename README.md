@@ -20,4 +20,4 @@ None. This is an example only and there's nothing due.
 
 1. Try building Voronoi polygons. The Voronoi tool is under `Vector` > `Geometry Tools`.
 
-1. Try computing the shortest distance between features. The shortest line tool is available in the `Toolbox` (gear icon) under the `Vector analysis` heading.
+1. Try computing the shortest distance between each tract centroid and the nearest store. The shortest line tool is available in the `Processing` > `Toolbox` (gear icon) under the `Vector analysis` heading. Use the tract centroids as the source layer and the stores as the destination layer.
