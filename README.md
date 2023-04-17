@@ -18,6 +18,10 @@ None. This is an example only and there's nothing due.
 
 1. Load `demo-output.gpkg` into QGIS
 
-1. Try building Voronoi polygons. The Voronoi tool is under `Vector` > `Geometry Tools`.
+1. Build Voronoi polygons around the stores. The Voronoi tool is under `Vector` > `Geometry Tools`. Choose the stores as the input layer and set the buffer region to 50%. Then clip the Voronoi layer at the county boundary, remove the unclipped Voronoi layer, and move the store layer to the top to see the overall result.
 
-1. Try computing the shortest distance between each tract centroid and the nearest store. The shortest line tool is available in the `Processing` > `Toolbox` (gear icon) under the `Vector analysis` heading. Use the tract centroids as the source layer and the stores as the destination layer.
+1. Add lines showing the shortest distance between each tract centroid and the nearest store. The `Shortest line between features` tool is available in the `Processing` > `Toolbox` (gear icon) under the `Vector analysis` heading. Use the tract centroids as the source layer and the stores as the destination layer. Move the centroid layer above the clipped Voronoi layer to see the overall result.
+
+## Tips
+
+* These layers could be exported for further analysis in a script. For example, the Voronoi layer could be used to find the population served by a given store, and the shortest line layer could be use to quickly compute an average distance people have to travel to their nearest store.
