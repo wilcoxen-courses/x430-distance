@@ -131,3 +131,35 @@ tracts.to_file(out_file,layer='tracts')
 centroids = tracts.copy()
 centroids['geometry'] = tracts.centroid
 centroids.to_file(out_file,layer='centroids')
+
+#%%
+#
+#  Find the distance from each tract centroid to the nearest store.
+#
+
+served_by = centroids.sjoin_nearest(geo,how='left',distance_col='dist')
+
+#
+#  What tracts does each serve?
+#
+
+grouped = served_by.groupby(['DBA Name','Street Number','Street Name'])
+
+serves = grouped.size()
+print( serves.sort_values(ascending=False).head(10) )
+
+#
+#  Now join the distance onto the tracts for plotting.
+#
+
+dist_to_store = served_by[['GEOID','dist']]
+
+tracts = tracts.merge(dist_to_store,on='GEOID',validate='1:1',indicator=True)
+print( tracts['_merge'].value_counts() )
+tracts = tracts.drop(columns='_merge')
+
+fig,ax1 = plt.subplots()
+tracts.plot('dist',ax=ax1,legend=True)
+geo.plot(color='red',markersize=0.5,ax=ax1)
+ax1.axis('off')
+fig.tight_layout()

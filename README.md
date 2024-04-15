@@ -14,6 +14,8 @@ There are two input files: **demo.gpkg**, which has a number of Census layers re
 
 ## Instructions
 
+1. Look over the demo script to see how it works. Some key features are how it parses spatial data in WKT format and how it uses the `.sjoin_nearest()` method of geopandas to compute distances between objects.
+
 1. Run demo.py
 
 1. Load `demo-output.gpkg` into QGIS
