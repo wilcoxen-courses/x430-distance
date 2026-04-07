@@ -117,7 +117,7 @@ voronoi_geo = voronoi_geo.clip( county, keep_geom_type=True )
 #  attributes from the store within each one.
 #
 
-voronoi = voronoi_geo.to_frame()
+voronoi = voronoi_geo.to_frame(name='geometry')
 voronoi = voronoi.sjoin(geo,how='left',predicate='intersects')
 
 #
