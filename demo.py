@@ -103,9 +103,38 @@ ax1.axis('off')
 
 #%%
 #
-#  Build a geopackage for use with QGIS in building Voronoi
-#  polygons. Start by removing any existing version of the
-#  output file, then write the layers.
+#  Construct a GeoSeries with the Voronoi polygons. Clip them
+#  at the county boundary since we're not interested in the
+#  area outside.
+#
+
+voronoi_geo = geo.voronoi_polygons()
+voronoi_geo = voronoi_geo.clip( county, keep_geom_type=True )
+
+#
+#  The Voronoi polygons will be geometries only and not have
+#  attributes. Turn them into a GeoDataFrame and add in the
+#  attributes from the store within each one.
+#
+
+voronoi = voronoi_geo.to_frame()
+voronoi = voronoi.sjoin(geo,how='left',predicate='intersects')
+
+#
+#  Draw a map
+#
+
+fig,ax = plt.subplots()
+county.plot(color='xkcd:lightblue',ax=ax)
+voronoi.boundary.plot(color='gray',linewidth=0.5,ax=ax)
+geo.plot(color='black',markersize=1,ax=ax)
+ax.axis('off')
+fig.tight_layout()
+
+#%%
+#
+#  Build a geopackage for use with QGIS. Start by removing any
+#  existing version of the output file, then write the layers.
 #
 
 if os.path.exists(out_file):
@@ -114,6 +143,7 @@ if os.path.exists(out_file):
 county.to_file(out_file,layer='county')
 syr.to_file(out_file,layer='city')
 geo.to_file(out_file,layer='stores')
+voronoi.to_file(out_file,layer='voronoi')
 
 #%%
 #
@@ -158,8 +188,8 @@ tracts = tracts.merge(dist_to_store,on='GEOID',validate='1:1',indicator=True)
 print( tracts['_merge'].value_counts() )
 tracts = tracts.drop(columns='_merge')
 
-fig,ax1 = plt.subplots()
-tracts.plot('dist',ax=ax1,legend=True)
-geo.plot(color='red',markersize=0.5,ax=ax1)
-ax1.axis('off')
+fig,ax = plt.subplots()
+tracts.plot('dist',ax=ax,legend=True)
+geo.plot(color='red',markersize=0.5,ax=ax)
+ax.axis('off')
 fig.tight_layout()
